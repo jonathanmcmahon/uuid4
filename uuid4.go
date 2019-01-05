@@ -53,18 +53,14 @@ func New() ([]byte, error) {
 
 	// a) set the two most significant bits (bits 6 and 7) of the
 	// clock_seq_hi_and_reserved to zero and one, respectively;
+	uuid[IdxClkSeqHiRes] &= 0xbf
+	uuid[IdxClkSeqHiRes] |= 0x80
 
 	// b) set the four most significant bits (bits 12 through 15) of the
 	// time_hi_and_version field to the 4-bit version number from
 	// Section 4.1.3 (the 4-bit version number for v4 is: 0100)
-
-	// Bitwise OR:
-	uuid[IdxTimeHiAndVersion+1] |= 0x4
-	uuid[IdxClkSeqHiRes] |= 0x1
-
-	// Bitwise AND:
-	uuid[IdxTimeHiAndVersion+1] &= 0xf4
-	uuid[IdxClkSeqHiRes] &= 0xfd
+	uuid[IdxTimeHiAndVersion] &= 0x0f
+	uuid[IdxTimeHiAndVersion] |= 0x40
 
 	return uuid, nil
 }

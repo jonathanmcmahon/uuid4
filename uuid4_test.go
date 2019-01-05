@@ -64,3 +64,59 @@ func TestUUIDNewStringShouldFormatStringCorrectly(t *testing.T) {
 		}
 	}
 }
+
+func TestUUIDShouldContainCorrectVariantBits(t *testing.T) {
+
+	variantIdx := IdxClkSeqHiRes
+
+	for i := 0; i < 100; i++ {
+		uuid, err := New()
+		if err != nil {
+			t.Error(err)
+		}
+		variant := uuid[variantIdx] >> 6
+		if variant != 0x2 { // 0b10
+			t.Errorf("Variant bits are incorrect: %v", variant)
+		}
+	}
+
+}
+
+func TestUUIDShouldContainCorrectVersionBits(t *testing.T) {
+
+	versionIdx := IdxTimeHiAndVersion
+
+	for i := 0; i < 100; i++ {
+		uuid, err := New()
+		if err != nil {
+			t.Error(err)
+		}
+		version := uuid[versionIdx] >> 4
+		if version != 0x4 { // 0b0100
+			t.Errorf("Version bits are incorrect: %v", version)
+		}
+	}
+
+}
+
+func TestUUIDStringNonrandomBitsShouldYieldAppropriateChars(t *testing.T) {
+
+	variantIdx := (IdxClkSeqHiRes * 2) + 3      // compensate for hyphens
+	versionIdx := (IdxTimeHiAndVersion * 2) + 2 // compensate for hyphens
+
+	for i := 0; i < 100; i++ {
+		uuid, err := NewString()
+		if err != nil {
+			t.Error(err)
+		}
+		validVariantChars := "89ab"
+		variant := string(uuid[variantIdx])
+		if !strings.Contains(validVariantChars, variant) {
+			t.Errorf("Variant character is invalid: %v", variant)
+		}
+		version := []rune(uuid)[versionIdx]
+		if string(version) != "4" {
+			t.Errorf("Version character should be 4 but was %v", version)
+		}
+	}
+}
