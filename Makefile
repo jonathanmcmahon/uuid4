@@ -16,5 +16,8 @@ build-linux:
 test:
 	go test -v -coverprofile=cover.out ./...
 
+bench:
+	go test -v -bench=. -run=^$$
+
 cover:
 	go tool cover -html=cover.out

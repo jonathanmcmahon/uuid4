@@ -4,7 +4,6 @@ package uuid4
 import (
 	"crypto/rand"
 	"fmt"
-	"strings"
 )
 
 // NewString returns a new version 4 UUID in string representation.
@@ -19,19 +18,23 @@ func NewString() (string, error) {
 		return "", err
 	}
 
-	var dst strings.Builder
-	for i, v := range uuid {
+	// 36-character uuid string
+	s := make([]byte, 36)
+
+	i := 0 // string index
+	for _, v := range uuid {
 		// Insert hyphens at appropriate indices
-		if i == 4 || i == 6 || i == 8 || i == 10 {
-			dst.WriteString(sep)
+		if i == 8 || i == 13 || i == 18 || i == 23 {
+			s[i] = byte(sep)
+			i++
 		}
-		// Encode MSB
-		dst.WriteString(string(hex[v>>4]))
-		// Encode LSB
-		dst.WriteString(string(hex[v&0xF]))
+		// Convert byte to two chars
+		s[i] = hex[v>>4]
+		s[i+1] = hex[v&0x0f]
+		i += 2
 	}
 
-	return dst.String(), nil
+	return string(s), nil
 }
 
 // New returns a new version 4 UUID as a byte slice.
@@ -101,4 +104,4 @@ const (
 )
 const uuidBytes = 16 // uuid is 128 bits
 const hex = "0123456789abcdef"
-const sep = "-"
+const sep = '-'
