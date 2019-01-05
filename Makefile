@@ -17,7 +17,8 @@ test:
 	go test -v -coverprofile=cover.out ./...
 
 bench:
-	go test -v -bench=. -run=^$$
+	printf "BENCHMARK REPORT - $(shell date)\n" > benchmark_results.txt
+	go test -v -bench=. -run=^$$ >> benchmark_results.txt
 
 cover:
 	go tool cover -html=cover.out

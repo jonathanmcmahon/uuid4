@@ -6,14 +6,14 @@ import (
 	"fmt"
 )
 
-// NewString returns a new version 4 UUID in string representation.
+// New returns a new version 4 UUID in string representation.
 //
 // Example: "48c51d77-69be-a444-c12f-984f2db2c269"
 //
 // source: https://tools.ietf.org/html/rfc4122#section-3
-func NewString() (string, error) {
+func New() (string, error) {
 
-	uuid, err := New()
+	uuid, err := NewBytes()
 	if err != nil {
 		return "", err
 	}
@@ -37,10 +37,10 @@ func NewString() (string, error) {
 	return string(s), nil
 }
 
-// New returns a new version 4 UUID as a byte slice.
+// NewBytes returns a new version 4 UUID as a byte slice.
 //
 // source: https://tools.ietf.org/html/rfc4122#section-4.4
-func New() ([]byte, error) {
+func NewBytes() ([]byte, error) {
 
 	uuid := make([]byte, uuidBytes)
 

@@ -1,6 +1,7 @@
 package uuid4
 
 import (
+	"fmt"
 	"strings"
 	"testing"
 )
@@ -13,7 +14,7 @@ func TestNewShouldNotYieldAnyCollisions(t *testing.T) {
 
 	// Generate a bunch of UUIDs
 	for i := 0; i < nRuns; i++ {
-		u, err := New()
+		u, err := NewBytes()
 		if err != nil {
 			t.Error(err)
 			return
@@ -40,9 +41,9 @@ func TestNewShouldNotYieldAnyCollisions(t *testing.T) {
 	}
 }
 
-func TestUUIDNewStringShouldFormatStringCorrectly(t *testing.T) {
+func TestUUIDNewShouldFormatStringCorrectly(t *testing.T) {
 
-	uuid, err := NewString()
+	uuid, err := New()
 	if err != nil {
 		t.Error(err)
 	}
@@ -70,7 +71,7 @@ func TestUUIDShouldContainCorrectVariantBits(t *testing.T) {
 	variantIdx := IdxClkSeqHiRes
 
 	for i := 0; i < 100; i++ {
-		uuid, err := New()
+		uuid, err := NewBytes()
 		if err != nil {
 			t.Error(err)
 		}
@@ -87,7 +88,7 @@ func TestUUIDShouldContainCorrectVersionBits(t *testing.T) {
 	versionIdx := IdxTimeHiAndVersion
 
 	for i := 0; i < 100; i++ {
-		uuid, err := New()
+		uuid, err := NewBytes()
 		if err != nil {
 			t.Error(err)
 		}
@@ -105,7 +106,7 @@ func TestUUIDStringNonrandomBitsShouldYieldAppropriateChars(t *testing.T) {
 	versionIdx := (IdxTimeHiAndVersion * 2) + 2 // compensate for hyphens
 
 	for i := 0; i < 100; i++ {
-		uuid, err := NewString()
+		uuid, err := New()
 		if err != nil {
 			t.Error(err)
 		}
@@ -119,4 +120,20 @@ func TestUUIDStringNonrandomBitsShouldYieldAppropriateChars(t *testing.T) {
 			t.Errorf("Version character should be 4 but was %v", version)
 		}
 	}
+}
+
+func ExampleNew_output() {
+	u, err := New()
+	if err != nil {
+		panic(err)
+	}
+	fmt.Println(u)
+
+	fmt.Println()
+
+	b, err := NewBytes()
+	if err != nil {
+		panic(err)
+	}
+	fmt.Println(b)
 }

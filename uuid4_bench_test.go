@@ -4,18 +4,18 @@ import (
 	"testing"
 )
 
-func BenchmarkNew(b *testing.B) {
+func BenchmarkNewBytes(b *testing.B) {
 	for i := 0; i < b.N; i++ {
-		_, err := New()
+		_, err := NewBytes()
 		if err != nil {
 			b.Error(err)
 		}
 	}
 }
 
-func BenchmarkNewString(b *testing.B) {
+func BenchmarkNew(b *testing.B) {
 	for i := 0; i < b.N; i++ {
-		_, err := NewString()
+		_, err := New()
 		if err != nil {
 			b.Error(err)
 		}

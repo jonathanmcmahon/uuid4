@@ -1,0 +1,8 @@
+BENCHMARK REPORT - Fri Jan  4 23:15:21 EST 2019
+goos: linux
+goarch: amd64
+pkg: github.com/jonathanmcmahon/uuid4
+BenchmarkNewBytes-4   	 2000000	       890 ns/op
+BenchmarkNew-4        	 1000000	      1117 ns/op
+PASS
+ok  	github.com/jonathanmcmahon/uuid4	3.833s
